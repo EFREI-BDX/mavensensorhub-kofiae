@@ -1,0 +1,89 @@
+name: Autograding Tests
+
+on:
+  - push
+  - workflow_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  jad-autograding:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4.5.0
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Generate Dependency Tree
+        run: mvn -q dependency:tree -DoutputFile=target/dependency-tree.txt -Daggregate=true
+
+      - name: Test data-management dependencies
+        id: test-data-management-dp
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Test data-management dependency test with main-application
+          setup-command: ''
+          command: mvn -B -q -fae test -Dtest=DataManagementTest#doAllTests --file pom.xml -DfailIfNoTests=false
+          timeout: 1
+          max-score: 5
+
+      - name: Test report-generation dependencies
+        id: test-report-generation-dp
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Test report-generation dependency test with data-management
+          setup-command: ''
+          command: mvn -B -q -fae test -Dtest=ReportGenerationTest#doAllTests --file pom.xml -DfailIfNoTests=false
+          timeout: 1
+          max-score: 5
+
+      - name: Test sensor-data-collection dependencies
+        id: test-sensor-data-collection-dp
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Test sensor-data-collection dependency test with data-management
+          setup-command: ''
+          command: mvn -B -q -fae test -Dtest=SensorDataCollectionTest#doAllTests --file pom.xml -DfailIfNoTests=false
+          timeout: 1
+          max-score: 0
+
+      - name: Test user-interface dependencies
+        id: test-user-interface-dp
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Test User Interface dependency test with data-management
+          setup-command: ''
+          command: mvn -B -q -fae test -Dtest=UserInterfaceTest#doAllTests --file pom.xml -DfailIfNoTests=false
+          timeout: 1
+          max-score: 10
+
+      - name: Test utils dependencies
+        id: test-utils-dp
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Test utils dependency test with data-management
+          setup-command: ''
+          command: mvn -B -q -fae test -Dtest=UtilsTest#doAllTests --file pom.xml -DfailIfNoTests=false
+          timeout: 1
+          max-score: 0
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST-DATA-MANAGEMENT-DP_RESULTS: "${{steps.test-data-management-dp.outputs.result}}"
+          TEST-REPORT-GENERATION-DP_RESULTS: "${{steps.test-report-generation-dp.outputs.result}}"
+          TEST-SENSOR-DATA-COLLECTION-DP_RESULTS: "${{steps.test-sensor-data-collection-dp.outputs.result}}"
+          TEST-USER-INTERFACE-DP_RESULTS: "${{steps.test-user-interface-dp.outputs.result}}"
+          TEST-UTILS-DP_RESULTS: "${{steps.test-utils-dp.outputs.result}}"
+        with:
+          runners: test-data-management-dp,test-report-generation-dp,test-sensor-data-collection-dp,test-user-interface-dp,test-utils-dp
