@@ -1,9 +1,6 @@
 package com.jad.datamanagement;
 
-import com.jad.sensordata.ISensor;
-import com.jad.sensordata.SensorData;
-import com.jad.sensordata.SensorType;
-import com.jad.utils.Utils;
+import com.jad.utils.*;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;

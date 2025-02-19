@@ -1,4 +1,4 @@
-package com.jad.sensordata;
+package com.jad.utils;
 
 public interface ISensor {
     SensorType getSensorType();

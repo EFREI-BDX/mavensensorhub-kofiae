@@ -1,6 +1,6 @@
 package com.jad.userinterface;
 
-import com.jad.datamanagement.IDataManager;
+import com.jad.utils.IDataManager;
 
 public interface IApplication {
     void manageOrder(UserAction userAction);

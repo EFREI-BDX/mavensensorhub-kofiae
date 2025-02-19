@@ -1,7 +1,8 @@
 package com.jad.datamanagement;
 
-import com.jad.sensordata.SensorData;
-import com.jad.sensordata.SensorType;
+import com.jad.utils.IDataProcessor;
+import com.jad.utils.SensorData;
+import com.jad.utils.SensorType;
 
 import java.time.LocalDateTime;
 import java.util.Map;

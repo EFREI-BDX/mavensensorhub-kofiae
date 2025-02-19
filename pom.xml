@@ -16,6 +16,8 @@
         <module>data-management</module>
         <module>user-interface</module>
         <module>test</module>
+        <module>controller</module>
+        <module>model</module>
     </modules>
 
     <properties>

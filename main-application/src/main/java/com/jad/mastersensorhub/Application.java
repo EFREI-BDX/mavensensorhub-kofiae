@@ -1,10 +1,10 @@
 package com.jad.mastersensorhub;
 
-import com.jad.datamanagement.IDataManager;
+import com.jad.utils.IDataManager;
 import com.jad.reportgeneration.IReportGenerator;
 import com.jad.reportgeneration.ReportType;
-import com.jad.sensordata.ISensorFactory;
-import com.jad.sensordata.SensorType;
+import com.jad.utils.ISensorFactory;
+import com.jad.utils.SensorType;
 import com.jad.userinterface.IApplication;
 import com.jad.userinterface.IUserInterface;
 import com.jad.userinterface.UserAction;
